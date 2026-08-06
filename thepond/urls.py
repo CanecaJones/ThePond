@@ -5,3 +5,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("pond.urls")),
 ]
+
+handler404 = "pond.views.custom_404"

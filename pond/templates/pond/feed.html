@@ -1,0 +1,12 @@
+{% extends "pond/base.html" %}
+{% block title %}Feed{% endblock %}
+{% block content %}
+<h1 data-i18n="feed.title">Feed</h1>
+<p class="subtitle" data-i18n="feed.subtitle">Tipo Twitter, mas sem o algoritmo tentando me deixar bravo.</p>
+
+<hr>
+
+<div class="empty-state" data-i18n="empty.feed">Nada por aqui. Nem toda ideia vira post.</div>
+
+{# Fase 2: loop de .feed-item com texto curto, timestamp relativo e galeria de imagens #}
+{% endblock %}

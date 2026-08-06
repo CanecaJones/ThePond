@@ -1,0 +1,12 @@
+{% extends "pond/base.html" %}
+{% block title %}Articles{% endblock %}
+{% block content %}
+<h1 data-i18n="articles.title">Articles</h1>
+<p class="subtitle" data-i18n="articles.subtitle">Textos longos. Leia sentado.</p>
+
+<hr>
+
+<div class="empty-state" data-i18n="empty.articles">Nenhum artigo ainda. A ideia existe, o texto não.</div>
+
+{# Quando tiver banco de dados: loop de .list-item com título, subtítulo, data e tempo de leitura #}
+{% endblock %}

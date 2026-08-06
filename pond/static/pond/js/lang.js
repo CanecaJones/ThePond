@@ -16,7 +16,14 @@
       "404.message": "Essa página não existe. Assim como testes unitários no meu primeiro projeto.",
       "404.back": "Voltar pra home",
       "footer.quote": "Debugging is twice as hard as writing the code in the first place.",
-      "footer.webring": "Um webring pra quem ainda lê man page"
+      "footer.webring": "Um webring pra quem ainda lê man page",
+      "articles.title": "Articles",
+      "articles.subtitle": "Textos longos. Leia sentado.",
+      "thoughts.title": "Thoughts",
+      "thoughts.subtitle": "Textos curtos, menos revisados, mais honestos.",
+      "feed.title": "Feed",
+      "feed.subtitle": "Tipo Twitter, mas sem o algoritmo tentando me deixar bravo.",
+      "about.title": "About",
     },
     en: {
       "nav.feed": "Feed",
@@ -34,7 +41,14 @@
       "404.message": "This page doesn't exist. Much like the unit tests in my first project.",
       "404.back": "Back to home",
       "footer.quote": "Debugging is twice as hard as writing the code in the first place.",
-      "footer.webring": "A webring for people who still read man pages"
+      "footer.webring": "A webring for people who still read man pages",
+      "articles.title": "Articles",
+      "articles.subtitle": "Long-form. Sit down for these.",
+      "thoughts.title": "Thoughts",
+      "thoughts.subtitle": "Shorter pieces, less edited, more honest.",
+      "feed.title": "Feed",
+      "feed.subtitle": "Like Twitter, minus the algorithm trying to make me angry.",
+      "about.title": "About",
     }
   };
 

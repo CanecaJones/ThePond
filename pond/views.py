@@ -23,3 +23,6 @@ def feed(request):
 
 def about(request):
     return render(request, "pond/about.html", {"active": "about"})
+
+def custom_404(request, exception):
+    return render(request, "pond/404.html", {}, status=404)
