@@ -6,7 +6,15 @@
 
 <hr>
 
-<div class="empty-state" data-i18n="empty.articles">Nenhum artigo ainda. A ideia existe, o texto não.</div>
-
-{# Quando tiver banco de dados: loop de .list-item com título, subtítulo, data e tempo de leitura #}
+{% if items %}
+  {% for item in items %}
+  <div class="list-item">
+    <h3><a href="{% url 'pond:article_detail' item.slug %}">{{ item.title }}</a></h3>
+    <p class="meta">{{ item.created_at|date:"d M Y" }} · {{ item.reading_time }} <span data-i18n="readtime">min de leitura</span></p>
+    {% if item.subtitle %}<p class="excerpt">{{ item.subtitle }}</p>{% endif %}
+  </div>
+  {% endfor %}
+{% else %}
+  <div class="empty-state" data-i18n="empty.articles">Nenhum artigo ainda. A ideia existe, o texto não.</div>
+{% endif %}
 {% endblock %}
