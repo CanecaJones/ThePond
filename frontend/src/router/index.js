@@ -3,11 +3,15 @@ import { useAuthStore } from "../stores/auth";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import FeedView from "../views/FeedView.vue";
+import ProfileView from "../views/ProfileView.vue";
+import NotificationsView from "../views/NotificationsView.vue";
 
 const routes = [
   { path: "/login", name: "login", component: LoginView },
   { path: "/register", name: "register", component: RegisterView },
   { path: "/", name: "feed", component: FeedView, meta: { requiresAuth: true } },
+  { path: "/profile/:handle", name: "profile", component: ProfileView, meta: { requiresAuth: true } },
+  { path: "/notifications", name: "notifications", component: NotificationsView, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

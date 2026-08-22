@@ -38,9 +38,6 @@ class PublicProfileView(generics.RetrieveAPIView):
 
 
 class FollowToggleView(APIView):
-    """
-    POST /api/auth/follow/<handle>/ -> segue ou deixa de seguir (toggle)
-    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, handle):
@@ -57,4 +54,5 @@ class FollowToggleView(APIView):
             follow.delete()
             return Response({"following": False})
 
+        Notification.objects.create(recipient=target, actor=request.user, verb="follow")
         return Response({"following": True})

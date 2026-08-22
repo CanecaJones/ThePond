@@ -1,45 +1,13 @@
 <template>
   <div class="min-h-screen bg-pond-black flex justify-center">
     <div class="flex w-full max-w-[990px]">
-      <!-- Sidebar -->
-      <aside class="w-[275px] shrink-0 hidden md:flex flex-col justify-between h-screen sticky top-0 px-3 py-4">
-        <div>
-          <AppLogo :size="44" />
-          <nav class="mt-6 flex flex-col gap-1">
-            <a class="flex items-center gap-4 px-3 py-3 rounded-full hover:bg-pond-surface font-bold cursor-pointer">
-              <Home :size="24" /> <span class="text-base">Feed</span>
-            </a>
-            <a class="flex items-center gap-4 px-3 py-3 rounded-full hover:bg-pond-surface text-pond-muted cursor-not-allowed" title="Em breve">
-              <Bell :size="24" /> <span class="text-base">Notificações</span>
-            </a>
-            <a class="flex items-center gap-4 px-3 py-3 rounded-full hover:bg-pond-surface text-pond-muted cursor-not-allowed" title="Em breve">
-              <User :size="24" /> <span class="text-base">Perfil</span>
-            </a>
-          </nav>
+      <AppSidebar :show-post-button="true" @compose="focusCompose" />
 
-          <button
-            @click="focusCompose"
-            class="w-full mt-4 bg-pond-red hover:bg-red-600 transition-colors text-white font-bold py-3 rounded-full"
-          >
-            Postar
-          </button>
-        </div>
-
-        <button
-          @click="handleLogout"
-          class="flex items-center gap-2 px-3 py-3 rounded-full hover:bg-pond-surface text-pond-muted text-sm"
-        >
-          <LogOut :size="18" /> Sair
-        </button>
-      </aside>
-
-      <!-- Feed central -->
       <main class="w-full max-w-feed border-x border-pond-border min-h-screen">
         <header class="sticky top-0 bg-pond-black/80 backdrop-blur border-b border-pond-border px-4 py-3 z-10">
           <h1 class="text-xl font-bold">The Pond</h1>
         </header>
 
-        <!-- Compose box -->
         <form @submit.prevent="handleCreatePost" class="border-b border-pond-border px-4 py-3">
           <div class="flex gap-3">
             <div class="w-10 h-10 rounded-full bg-pond-surface flex items-center justify-center shrink-0 text-pond-muted">
@@ -50,7 +18,7 @@
                 ref="composeRef"
                 v-model="content"
                 maxlength="300"
-                placeholder="O que está rolando na lagoa?"
+                placeholder="O que esta rolando na lagoa?"
                 rows="2"
                 class="w-full bg-transparent resize-none text-lg placeholder-pond-muted focus:outline-none"
               ></textarea>
@@ -72,11 +40,11 @@
                     <ImageIcon :size="20" />
                     <input type="file" accept="image/*" @change="onFileChange($event, 'image')" hidden />
                   </label>
-                  <label class="p-2 rounded-full hover:bg-pond-blue/10 cursor-pointer" title="Vídeo (máx. 20MB)">
+                  <label class="p-2 rounded-full hover:bg-pond-blue/10 cursor-pointer" title="Video (max. 20MB)">
                     <VideoIcon :size="20" />
                     <input type="file" accept="video/*" @change="onFileChange($event, 'video')" hidden />
                   </label>
-                  <label class="p-2 rounded-full hover:bg-pond-blue/10 cursor-pointer" title="Áudio">
+                  <label class="p-2 rounded-full hover:bg-pond-blue/10 cursor-pointer" title="Audio">
                     <Music :size="20" />
                     <input type="file" accept="audio/*" @change="onFileChange($event, 'audio')" hidden />
                   </label>
@@ -104,7 +72,6 @@
           </div>
         </form>
 
-        <!-- Lista de posts -->
         <div v-if="loading" class="text-center text-pond-muted py-10">Carregando o feed...</div>
         <div v-else>
           <PostCard
@@ -122,14 +89,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import api from "../services/api";
-import AppLogo from "../components/AppLogo.vue";
+import AppSidebar from "../components/AppSidebar.vue";
 import PostCard from "../components/PostCard.vue";
 import {
-  Home, Bell, User, Image as ImageIcon, Video as VideoIcon,
-  Music, Link2, LogOut,
+  User, Image as ImageIcon, Video as VideoIcon, Music, Link2,
 } from "lucide-vue-next";
 
 const MAX_VIDEO_SIZE = 20 * 1024 * 1024;
@@ -147,7 +112,6 @@ const selectedFileType = ref(null);
 const filePreviewName = ref("");
 
 const auth = useAuthStore();
-const router = useRouter();
 
 function focusCompose() {
   composeRef.value?.focus();
@@ -158,7 +122,7 @@ function onFileChange(event, type) {
   if (!file) return;
 
   if (type === "video" && file.size > MAX_VIDEO_SIZE) {
-    formError.value = "O vídeo não pode passar de 20MB.";
+    formError.value = "O video nao pode passar de 20MB.";
     event.target.value = "";
     return;
   }
@@ -178,7 +142,7 @@ async function loadFeed() {
 
 async function handleCreatePost() {
   if (!content.value.trim() && !selectedFile.value && !link.value.trim()) {
-    formError.value = "O post precisa ter texto, mídia ou link.";
+    formError.value = "O post precisa ter texto, midia ou link.";
     return;
   }
 
@@ -218,10 +182,8 @@ async function toggleRepost(post) {
   post.reposts_count += data.reposted ? 1 : -1;
 }
 
-function handleLogout() {
-  auth.logout();
-  router.push("/login");
-}
-
-onMounted(loadFeed);
+onMounted(async () => {
+  if (!auth.user) await auth.fetchMe();
+  loadFeed();
+});
 </script>

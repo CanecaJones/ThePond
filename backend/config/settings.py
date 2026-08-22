@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     # apps do projeto
     "users",
     "posts",
+    "notifications",
 ]
 
 MIDDLEWARE = [

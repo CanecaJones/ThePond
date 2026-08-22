@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from users.models import Follow
 from .models import Post, Like, Repost
 from .serializers import PostSerializer
+from notifications.models import Notification
 
 
 class PostListCreateView(generics.ListCreateAPIView):
@@ -46,6 +47,9 @@ class LikeToggleView(APIView):
         if not created:
             like.delete()
             return Response({"liked": False})
+
+        if post.author != request.user:
+            Notification.objects.create(recipient=post.author, actor=request.user, verb="like", post=post)
         return Response({"liked": True})
 
 
@@ -62,6 +66,9 @@ class RepostToggleView(APIView):
         if not created:
             repost.delete()
             return Response({"reposted": False})
+
+        if post.author != request.user:
+            Notification.objects.create(recipient=post.author, actor=request.user, verb="repost", post=post)
         return Response({"reposted": True})
 
 class UserPostsView(generics.ListAPIView):
