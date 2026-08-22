@@ -1,7 +1,27 @@
-venv/
+# Python / Django
 __pycache__/
 *.pyc
-db.sqlite3
+*.pyo
+env/
+venv/
+.venv/
+*.sqlite3
+staticfiles/
 media/
+
+# Django secrets
 .env
+*.local
+
+# Node / React
+node_modules/
+frontend/build/
+frontend/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/OS
+.vscode/
+.idea/
 .DS_Store
