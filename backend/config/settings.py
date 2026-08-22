@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # apps do projeto
     "users",
+    "posts",
 ]
 
 MIDDLEWARE = [

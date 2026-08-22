@@ -26,3 +26,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
+
+from .models import Follow
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ["id", "follower", "following", "created_at"]
+        read_only_fields = ["id", "follower", "created_at"]
