@@ -1,13 +1,14 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, parsers, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import User
+from .models import User, Follow
 from .serializers import RegisterSerializer, UserSerializer
 
 
 class RegisterView(generics.CreateAPIView):
     """
     Endpoint de registro: POST /api/auth/register/
-    Corpo esperado: { "username": "...", "handle": "...", "password": "..." }
     """
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -17,23 +18,28 @@ class RegisterView(generics.CreateAPIView):
 class MeView(generics.RetrieveUpdateAPIView):
     """
     Endpoint do usuário logado: GET/PATCH /api/auth/me/
-    Usado para ver e editar o próprio perfil (bio, avatar, handle).
     """
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser, parsers.JSONParser]
 
     def get_object(self):
         return self.request.user
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Follow
+
+class PublicProfileView(generics.RetrieveAPIView):
+    """
+    Perfil público de qualquer usuário: GET /api/auth/profile/<handle>/
+    """
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+    lookup_field = "handle"
+    queryset = User.objects.all()
 
 
 class FollowToggleView(APIView):
     """
-    POST /api/auth/follow/<handle>/  -> segue ou deixa de seguir (toggle)
+    POST /api/auth/follow/<handle>/ -> segue ou deixa de seguir (toggle)
     """
     permission_classes = [permissions.IsAuthenticated]
 
@@ -52,4 +58,3 @@ class FollowToggleView(APIView):
             return Response({"following": False})
 
         return Response({"following": True})
-

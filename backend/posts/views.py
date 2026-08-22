@@ -63,3 +63,13 @@ class RepostToggleView(APIView):
             repost.delete()
             return Response({"reposted": False})
         return Response({"reposted": True})
+
+class UserPostsView(generics.ListAPIView):
+    """
+    GET /api/posts/user/<handle>/ -> posts de um usuário específico
+    """
+    serializer_class = PostSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return Post.objects.filter(author__handle=self.kwargs["handle"])
